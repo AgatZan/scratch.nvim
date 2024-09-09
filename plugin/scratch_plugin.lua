@@ -8,7 +8,7 @@ local base_path = vim.fn.stdpath("cache")
 	.. "scratch.nvim"
 	.. vim.g.os_sep
 vim.g.scratch_config = { ---@type Scratch.ActorConfig
-	scratch_file_dir = base_path,
+	base_dir = base_path,
 	filetypes = { "lua", "js", "py", "sh", "MANUAL INPUT" }, -- Last means manual
 	win_config = {},
 	filetype_details = {},
@@ -17,7 +17,7 @@ local api = require("scratch.api")
 
 vim.api.nvim_create_user_command("Scratch", function(args)
 	local fts = vim.g.scratch_config.filetypes
-	local scratch_file_dir = vim.g.scratch_config.scratch_file_dir
+	local scratch_file_dir = vim.g.scratch_config.base_dir
 	if args.range > 0 then
 		api.scratchWithFt(scratch_file_dir, fts, {
 			content = api.getSelectedText(),
@@ -34,6 +34,6 @@ end, { range = true })
 
 vim.api.nvim_create_user_command("ScratchOpen", function()
 	require("scratch.default_finder").findByTelescope(
-		vim.g.scratch_config.scratch_file_dir
+		vim.g.scratch_config.base_dir
 	)
 end, {})
