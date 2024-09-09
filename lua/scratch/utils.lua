@@ -68,26 +68,12 @@ function M.getSelectedText()
 	return lines
 end
 
--- ---Open window or set current window to new buffer
--- ---@param abs_path string
--- ---@param config? vim.api.keyset.win_config
--- function M.open_(abs_path, config)
---   local buf = vim.api.nvim_create_buf(true, false)
---   vim.api.nvim_buf_set_name(buf, abs_path)
---   if config == nil then
---     vim.api.nvim_set_current_buf(buf)
---   else
---     vim.api.nvim_open_win(buf, true, config)
---   end
--- end
-
 ---Make scratch file
 ---@param abs_path string
 ---@param win_config vim.api.keyset.win_config
 ---@param content? string[]
----@param local_keys? Scratch.LocalKeyConfig
 ---@param cursor? Scratch.Cursor
-function M.scratch(abs_path, win_config, content, local_keys, cursor)
+function M.scratch(abs_path, win_config, content, cursor)
 	local buf = vim.api.nvim_create_buf(true, false)
 	vim.api.nvim_buf_set_name(buf, abs_path)
 	if next(win_config) == nil then
@@ -105,29 +91,6 @@ function M.scratch(abs_path, win_config, content, local_keys, cursor)
 	end
 	if cursor then
 		M.put_cursor(cursor)
-	end
-	if local_keys then
-		M.register_local_key(local_keys)
-	end
-end
-
----@param localKeys Scratch.LocalKeyConfig[]
-function M.register_local_key(localKeys)
-	local filename = vim.fn.expand("%:t")
-	for _, key in ipairs(localKeys) do
-		for _, namePattern in ipairs(key.filenameContains) do
-			if string.find(filename, namePattern) ~= nil then
-				local buf = vim.api.nvim_get_current_buf()
-				for _, localKey in ipairs(key.LocalKeys) do
-					vim.keymap.set(localKey.mode, localKey.lhs, localKey.rhs, {
-						noremap = true,
-						silent = true,
-						nowait = true,
-						buffer = buf,
-					})
-				end
-			end
-		end
 	end
 end
 
