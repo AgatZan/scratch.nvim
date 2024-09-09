@@ -2,6 +2,8 @@ local M = {}
 ---@class Scratch.FiletypeDetail
 ---@field content? string[]
 ---@field cursor? Scratch.Cursor
+---@field win_config vim.api.keyset.win_config
+---@field generator? fun(base_path:string, ft:string): string
 
 ---@alias Scratch.FiletypeDetails { [string]:Scratch.FiletypeDetail }
 
@@ -12,16 +14,14 @@ local M = {}
 ---@class Scratch.ActorConfig
 ---@field scratch_file_dir string
 ---@field filetypes string[]
----@field win_config vim.api.keyset.win_config @see nvim_open_window
 ---@field filetype_details Scratch.FiletypeDetails
----@field manual_text string
+---@field win_config vim.api.keyset.win_config @see nvim_open_window
 
 ---@class Scratch.Config
 ---@field scratch_file_dir? string
 ---@field filetypes? string[]
 ---@field win_config? vim.api.keyset.win_config @see nvim_open_window
 ---@field filetype_details? Scratch.FiletypeDetails
----@field manual_text? string
 
 ---@param user_config Scratch.Config
 ---@return Scratch.ActorConfig
