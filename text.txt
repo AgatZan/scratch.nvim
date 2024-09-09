@@ -1,8 +1,0 @@
-{ "24-09-07_22-24-35.lua",
-  index = 1,
-  <metatable> = {
-    __index = <function 1>,
-    cwd = "C:\\Users\\user\\AppData\\Local\\Temp\\nvim\\scratch.nvim",
-    display = <function 2>
-  }
-}
