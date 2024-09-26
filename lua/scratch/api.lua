@@ -24,12 +24,17 @@ function M.scratchByType(scratch_file_dir, ft, opts)
 
 	local buf = vim.api.nvim_create_buf(true, false)
 	vim.api.nvim_buf_set_name(buf, abs_path)
+	local filetype = vim.filetype.match({ filename = abs_path })
+	vim.api.nvim_set_option_value("filetype", filetype, { buf = buf })
 
 	-- win_config == {}
 	if next(opts.win_config) == nil then
 		vim.api.nvim_set_current_buf(buf)
 	else
 		vim.api.nvim_open_win(buf, true, opts.win_config)
+	end
+	if opts.content then
+		vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.content)
 	end
 end
 
