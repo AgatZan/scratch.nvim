@@ -24,11 +24,16 @@ vim.api.nvim_create_user_command("Scratch", function(args)
 			win_config = vim.g.scratch_config.win_config,
 		})
 	else
-		api.scratchWithFt(
-			scratch_file_dir,
-			fts,
-			{ win_config = vim.g.scratch_config.win_config }
-		)
+		vim.print({
+			scratch_file_dir = scratch_file_dir,
+			fts = fts,
+			opts = { win_config = vim.g.scratch_config.win_config },
+		})
+		-- api.scratchWithFt(
+		-- 	scratch_file_dir,
+		-- 	fts,
+		-- 	{ win_config = vim.g.scratch_config.win_config }
+		-- )
 	end
 end, { range = true })
 

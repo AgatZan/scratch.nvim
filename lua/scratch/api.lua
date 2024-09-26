@@ -31,19 +31,16 @@ function M.scratchByType(scratch_file_dir, ft, opts)
 	else
 		vim.api.nvim_open_win(buf, true, opts.win_config)
 	end
-	if opts.content then
-		-- TODO: remove when remade templater
-		local bufnr = vim.api.nvim_get_current_buf()
-		vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, opts.content)
-	end
-	if opts.cursor then
-		vim.api.nvim_win_set_cursor(0, opts.cursor.location)
-		if opts.cursor.insert_mode then
-			vim.api.nvim_feedkeys("a", "n", true)
-		end
-	end
 end
 
+function M.scratchFromInput(scratch_file_dir, opts)
+	vim.ui.input({ prompt = "Inter filetype: " }, function(choice)
+		if choice ~= nil then
+			return M.scratchByType(scratch_file_dir, choice, opts)
+		end
+		vim.notify("No filetype", vim.log.levels.INFO)
+	end)
+end
 ---simple input name
 ---@param scratch_file_dir string
 ---@param filetypes string[]

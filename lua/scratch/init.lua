@@ -1,15 +1,9 @@
 local M = {}
 ---@class Scratch.FiletypeDetail
----@field content? string[]
----@field cursor? Scratch.Cursor
 ---@field win_config vim.api.keyset.win_config
 ---@field generator? fun(base_path:string, ft:string): string
 
 ---@alias Scratch.FiletypeDetails { [string]:Scratch.FiletypeDetail }
-
----@class Scratch.Cursor
----@field location number[]
----@field insert_mode boolean
 
 ---@class Scratch.ActorConfig
 ---@field base_dir string
@@ -29,16 +23,22 @@ function M.setup(user_config)
 	if next(user_config) == nil then
 		return vim.g.scratch_config
 	end
-	vim.g.scratch_config =
-		vim.tbl_deep_extend("force", vim.g.scratch_config, user_config)
-	vim.g.scratch_config.win_config = user_config.win_config
-		or vim.g.scratch_config.win_config
+	if user_config.base_dir then
+		vim.g.scratch_config.base_dir = user_config.base_dir
+	end
 	if
-		vim.g.scratch_config.base_dir
-		and not vim.uv.fs_stat(vim.g.scratch_config.base_dir).type
-			== "directory"
+		not vim.uv.fs_stat(vim.g.scratch_config.base_dir).type == "directory"
 	then
 		vim.uv.fs_mkdir(vim.g.scratch_config.base_dir, 666)
+	end
+	if user_config.filetypes then
+		vim.g.scratch_config.filetypes = user_config.filetypes
+	end
+	if user_config.filetype_details then
+		vim.g.scratch_config.filetype_details = user_config.filetype_details
+	end
+	if user_config.win_config then
+		vim.g.scratch_config.win_config = user_config.win_config
 	end
 	return vim.g.scratch_config
 end
