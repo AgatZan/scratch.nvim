@@ -24,7 +24,7 @@ return {
     },
     opts = {
         base_dir = vim.fn.stdpath("cache") .. "/scratch.nvim", -- where your scratch files will be put
-        window_cmd = {} -- default |:h nvim_open_win()| {config}
+        win_config = {} -- default |:h nvim_open_win()| {config}
         filetypes = { "lua", "js", "sh", "ts", "MANUAL_TEXT" }, -- you can simply put filetype here. NOTE: last always manual
         filetype_details = { -- or, you can have more control here
             ["file_type"] = {
