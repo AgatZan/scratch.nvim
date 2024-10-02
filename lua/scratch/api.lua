@@ -5,6 +5,7 @@ function M.getSelectedText()
 	local sv = vim.fn.getpos("'<")
 	local ev = vim.fn.getpos("'>")
 	local lines = vim.fn.getline(sv[2], ev[2]) ---@cast lines string[]
+	-- local lines = vim.api.nvim_buf_get_lines(0, sv[2] - 1, ev[2], false)
 	local n = #lines
 	if n == 0 then
 		return {}
