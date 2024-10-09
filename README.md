@@ -6,12 +6,12 @@ Create temporary playground files effortlessly. Find them later without worrying
 
 ```lua
 -- use lazy.nvim
-{
+vim.g.os_sep = '/' -- your os directory separator
+return {
   "AgatZan/scratch.nvim",
   branch = "mini"
 }
 ```
-
 <details>
 <summary>Detailed Configuration</summary>
 
@@ -23,18 +23,16 @@ return {
         {"nvim-telescope/telescope.nvim"}, -- optional: if you want to pick scratch file by telescope
     },
     opts = {
-        base_dir = vim.fn.stdpath("cache") .. "/scratch.nvim", -- where your scratch files will be put
+        --NOTE: base_dir must end with OS directory separator(`"/" "\\"`)
+        base_dir = vim.fn.stdpath("cache") .. vim.g.os_sep .. "scratch.nvim" .. vim.g.os_sep, -- where your scratch files will be put.
         win_config = {} -- default |:h nvim_open_win()| {config}
-        filetypes = { "lua", "js", "sh", "ts", "MANUAL_TEXT" }, -- you can simply put filetype here. NOTE: last always manual
-        filetype_details = { -- or, you can have more control here
-            ["file_type"] = {
-                content = {"first line", "second"},
-                cursor = {
-                    location = {0,0}, -- index to place cursor
-                    insert_mode = true, -- in insert mode?
-                }, 
+        choices = { "lua", "js", "sh", "ts", "MANUAL_TEXT" }, -- trigger as default filetype. NOTE: last always manual
+        choice_details = { -- or, you can have more control here
+            ["choice"] = {
+                ft = "txt", -- :see `filetypes`
                 win_config = {} -- |:h nvim_open_win()| {config}
-                generator = function(base_dir, filetype) return "something" end
+                content = {"first line", "second line"} -- default text
+                generator = function(base_dir) return "something" end
             },
         },
     },
@@ -67,6 +65,19 @@ vim.keymap.set("n", "<leader><leader>", "<cmd>Scratch<cr>")
 vim.keymap.set("n", "<leader>fs", "<cmd>ScratchOpen<cr>", {desc = "[F]ind [S]cratch"})
 ```
 
+## API
+
+`require("scratch.api")`
+`detail` := {
+    ft:string, 
+    win_config:vim.api.keyset.win_config, 
+    generator: fun(base_dir:string):string
+}
+| Function        | Prototype       | Description |
+| --------------  | --------------- | ----------- |
+| `scratch`   | `fun(scratch_dir:string, ft:string, opts:detail)`        | Create empty buffer at result of `opts.generator(scratch_dir)` and open it by `opts.win_config` or replace current if `{}` |
+| `ft_input`  | `fun(scratch_dir:string, opts:detail)`                   | Input filetype and create buffer with it like filetype |
+| `ft_select` | `fun(scratch_dir:string, choices:string[], opts:detail)` | Select filetype from given choice |
 ## CREDITS
 - [@LintaoAmons](https://github.com/LintaoAmons) for making [scratch.nvim](https://github.com/LintaoAmons)
 

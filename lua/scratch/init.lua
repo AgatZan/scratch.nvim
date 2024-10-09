@@ -1,6 +1,7 @@
 local M = {}
 ---@class Scratch.FiletypeDetail
----@field win_config vim.api.keyset.win_config
+---@field ft string @see: `filetypes`
+---@field win_config? vim.api.keyset.win_config
 ---@field content? string[]
 ---@field generator? fun(base_path:string, ft:string): string
 
@@ -8,15 +9,15 @@ local M = {}
 
 ---@class Scratch.ActorConfig
 ---@field base_dir string
----@field filetypes string[]
----@field filetype_details Scratch.FiletypeDetails
+---@field choices string[]
+---@field choice_details Scratch.FiletypeDetails
 ---@field win_config vim.api.keyset.win_config @see nvim_open_window
 
 ---@class Scratch.Config
 ---@field base_dir? string
----@field filetypes? string[]
+---@field choices? string[]
+---@field choice_details? Scratch.FiletypeDetails
 ---@field win_config? vim.api.keyset.win_config @see nvim_open_window
----@field filetype_details? Scratch.FiletypeDetails
 
 ---@param user_config Scratch.Config
 ---@return Scratch.ActorConfig
@@ -30,13 +31,13 @@ function M.setup(user_config)
 	if
 		not vim.uv.fs_stat(vim.g.scratch_config.base_dir).type == "directory"
 	then
-		vim.uv.fs_mkdir(vim.g.scratch_config.base_dir, 666)
+		vim.uv.fs_mkdir(vim.g.scratch_config.base_dir, tonumber("0666", 8))
 	end
-	if user_config.filetypes then
-		vim.g.scratch_config.filetypes = user_config.filetypes
+	if user_config.choices then
+		vim.g.scratch_config.filetypes = user_config.choices
 	end
-	if user_config.filetype_details then
-		vim.g.scratch_config.filetype_details = user_config.filetype_details
+	if user_config.choice_details then
+		vim.g.scratch_config.filetype_details = user_config.choice_details
 	end
 	if user_config.win_config then
 		vim.g.scratch_config.win_config = user_config.win_config
