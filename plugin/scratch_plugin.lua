@@ -34,7 +34,6 @@ vim.api.nvim_create_user_command("Scratch", function(args)
 	local scratch_file_dir = vim.g.scratch_config.base_dir --[[@as string]]
 	if args.range > 0 then
 		api.ft_select(scratch_file_dir, fts, {
-			ft = "",
 			content = get_selected(),
 			win_config = vim.g.scratch_config.win_config,
 		})
@@ -42,7 +41,7 @@ vim.api.nvim_create_user_command("Scratch", function(args)
 		api.ft_select(
 			scratch_file_dir,
 			fts,
-			{ ft = "", win_config = vim.g.scratch_config.win_config }
+			{ win_config = vim.g.scratch_config.win_config }
 		)
 	end
 end, { range = true })

@@ -1,6 +1,6 @@
 local M = {}
 ---@class Scratch.FiletypeDetail
----@field ft string @see: `filetypes`
+---@field ft? string @see: `filetypes`
 ---@field win_config? vim.api.keyset.win_config
 ---@field content? string[]
 ---@field generator? fun(base_path:string, ft:string): string
