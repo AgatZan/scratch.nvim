@@ -2,16 +2,11 @@ if vim.g.scratch_load then
 	return
 end
 local function get_selected()
-	local sv = vim.fn.getpos("'<")
-	local ev = vim.fn.getpos("'>")
-	local lines = vim.fn.getline(sv[2], ev[2]) ---@cast lines string[]
-	local n = #lines
-	if n == 0 then
-		return {}
-	end
-	lines[n] = string.sub(lines[n], 1, sv[3])
-	lines[1] = string.sub(lines[1], ev[3])
-	return lines
+	return vim.fn.getregion(
+		vim.fn.getpos("v"),
+		vim.fn.getpos("."),
+		{ type = vim.api.nvim_get_mode().mode }
+	)
 end
 
 vim.g.scratch_load = true
