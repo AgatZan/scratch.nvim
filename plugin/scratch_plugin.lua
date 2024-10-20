@@ -4,8 +4,8 @@ end
 local function get_selected()
 	return vim.fn.getregion(
 		vim.fn.getpos("v"),
-		vim.fn.getpos("."),
-		{ type = vim.api.nvim_get_mode().mode }
+		vim.fn.getpos("'>"),
+		{ type = "v" }
 	)
 end
 
