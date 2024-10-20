@@ -1,11 +1,11 @@
 if vim.g.scratch_load then
 	return
 end
-local function get_selected()
+local function get_selected(mode)
 	return vim.fn.getregion(
 		vim.fn.getpos("v"),
-		vim.fn.getpos("'>"),
-		{ type = "v" }
+		vim.fn.getpos("."),
+		{ type = mode }
 	)
 end
 
@@ -24,21 +24,17 @@ vim.g.scratch_config = { ---@type Scratch.ActorConfig
 }
 local api = require("scratch.api")
 
-vim.api.nvim_create_user_command("Scratch", function(args)
+vim.api.nvim_create_user_command("Scratch", function()
 	local fts = vim.g.scratch_config.choices
 	local scratch_file_dir = vim.g.scratch_config.base_dir --[[@as string]]
-	if args.range > 0 then
-		api.ft_select(scratch_file_dir, fts, {
-			content = get_selected(),
-			win_config = vim.g.scratch_config.win_config,
-		})
-	else
-		api.ft_select(
-			scratch_file_dir,
-			fts,
-			{ win_config = vim.g.scratch_config.win_config }
-		)
+	local opts = { win_config = vim.g.scratch_config.win_config }
+	local mode = vim.api.nvim_get_mode().mode
+	if mode ~= "n" then
+		opts.content = get_selected(mode)
+		-- elseif args.range > 0 then
+		-- 	opts.content = get_selected("'>")
 	end
+	api.ft_select(scratch_file_dir, fts, opts)
 end, { range = true })
 
 vim.api.nvim_create_user_command("ScratchOpen", function()
