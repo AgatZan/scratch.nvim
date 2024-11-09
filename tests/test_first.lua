@@ -14,12 +14,12 @@ end
 
 local T = MiniTest.new_set({
       parametrize = { 
-      { escape('<C-o>O') }, { escape('<bs>') }, { escape('<cr>') }, {escape('<C-g>U')}, {escape("<left>")}, {escape("<right>")} 
+      { "<C-o>O", escape('<C-o>O') }, {'<bs>', escape('<bs>') }, {'<cr>', escape('<cr>') }, {'<C-g>U',escape('<C-g>U')}, {"<left>", escape("<left>")}, {"<right>",escape("<right>")} 
     },
 })
 
-T["works"] = function(term)
-    MiniTest.add_note("|1>--- " .. term)
+T["works"] = function(key, term)
+    MiniTest.add_note("|".. key..">--- " .. term)
 end
 
 return T
